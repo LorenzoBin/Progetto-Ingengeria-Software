@@ -1,0 +1,7 @@
+COMUNI
+balvalbalbalbal;false
+partecipanti;false
+CATEGORIE
+nuoto
+giochi
+viaggi
