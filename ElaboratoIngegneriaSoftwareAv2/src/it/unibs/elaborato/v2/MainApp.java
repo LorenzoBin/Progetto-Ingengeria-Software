@@ -1,6 +1,9 @@
 package it.unibs.elaborato.v2;
 
 import java.util.*;
+
+import it.unibs.fp.mylib.InputDati;
+
 import java.io.*;
 
 public class MainApp {
@@ -20,23 +23,19 @@ public class MainApp {
 			// CICLO DI LOGIN
 			while (utenteAttivo == null) {
 				System.out.println("\n--- ACCESSO SISTEMA ---");
-				System.out.print("User: ");
-				String u = sc.nextLine();
-				System.out.print("Pass: ");
-				String p = sc.nextLine();
+				String u = InputDati.leggiStringaNonVuota("Username: ");
+				String p = InputDati.leggiStringaNonVuota("Password: ");
 
 				if (login.isMasterAdmin(u, p)) {
 					System.out.println("\n--- REGISTRAZIONE NUOVO CONFIGURATORE ---");
 					String nuovoU;
 					while (true) {
-						System.out.print("Inserisci Username personale: ");
-						nuovoU = sc.nextLine();
+						nuovoU = InputDati.leggiStringaNonVuota("Inserisci Username personale: ");
 						if (!login.esisteGia(nuovoU))
 							break;
 						System.out.println("Errore: username già in uso o riservato!");
 					}
-					System.out.print("Inserisci Password personale: ");
-					String nuovoP = sc.nextLine();
+					String nuovoP = InputDati.leggiStringaNonVuota("Inserisci Password personale: ");
 
 					login.registraNuovo(nuovoU, nuovoP);
 					login.salva(FILE_CREDENZIALI);
@@ -75,9 +74,8 @@ public class MainApp {
 			System.out.println("7. Visualizza Bacheca per Categoria");
 			System.out.println("8. Visualizza Intera Bacheca");
 			System.out.println("0. Salva ed Esci");
-			System.out.print("Scelta: ");
 
-			String scelta = sc.nextLine();
+			String scelta = InputDati.leggiStringaNonVuota("Scelta: ");
 			switch (scelta) {
 			case "0":
 				conf.salvaDati(FILE_DATI_SISTEMA);
@@ -90,40 +88,30 @@ public class MainApp {
 				conf.getCategorie().forEach(c -> c.visualizza(conf.getCampiBase(), conf.getCampiComuni()));
 				break;
 			case "2":
-				System.out.print("1. Aggiungi\n2. Rimuovi: ");
-				String s2 = sc.nextLine();
-				System.out.print("Nome Categoria: ");
-				String nCat = sc.nextLine();
+				String s2 = InputDati.leggiStringaNonVuota("1. Aggiungi\n2. Rimuovi ");
+				String nCat = InputDati.leggiStringaNonVuota("Nome Categoria: ");
 				if (s2.equals("1"))
 					conf.creaCategoria(nCat);
 				else
 					conf.rimuoviCategoria(nCat);
 				break;
 			case "3":
-				System.out.print("1. Aggiungi\n2. Rimuovi\n3. Modifica Obbligatorietà: ");
-				String s3 = sc.nextLine();
-				System.out.print("Nome Campo Comune: ");
-				String nC = sc.nextLine();
+				String s3 = InputDati.leggiStringaNonVuota("1. Aggiungi\n2. Rimuovi\n3. Modifica Obbligatorietà: ");
+				String nC = InputDati.leggiStringaNonVuota("Nome Campo Comune: ");
 				if (s3.equals("1")) {
-					System.out.print("Obbligatorio? (s/n): ");
-					conf.aggiungiCampoComune(nC, sc.nextLine().equalsIgnoreCase("s"));
+					conf.aggiungiCampoComune(nC, InputDati.leggiStringaNonVuota("Obbligatorio? (s/n): ").equalsIgnoreCase("s"));
 				} else if (s3.equals("2"))
 					conf.rimuoviCampoComune(nC);
 				else {
-					System.out.print("Nuovo stato Obbligatorio? (s/n): ");
-					conf.cambiaObbligatorietaComune(nC, sc.nextLine().equalsIgnoreCase("s"));
+					conf.cambiaObbligatorietaComune(nC, InputDati.leggiStringaNonVuota("Nuovo stato Obbligatorio? (s/n): ").equalsIgnoreCase("s"));
 				}
 				break;
 			case "4":
-				System.out.print("Categoria: ");
-				String catS = sc.nextLine();
-				System.out.print("1. Aggiungi Specifico\n2. Rimuovi Specifico: ");
-				String s4 = sc.nextLine();
-				System.out.print("Nome Campo: ");
-				String nS = sc.nextLine();
+				String catS = InputDati.leggiStringaNonVuota("Categoria: ");
+				String s4 = InputDati.leggiStringaNonVuota("1. Aggiungi Specifico\n2. Rimuovi Specifico ");
+				String nS = InputDati.leggiStringaNonVuota("Nome Campo: ");
 				if (s4.equals("1")) {
-					System.out.print("Obbligatorio? (s/n): ");
-					conf.aggiungiCampoSpecifico(catS, nS, sc.nextLine().equalsIgnoreCase("s"));
+					conf.aggiungiCampoSpecifico(catS, nS, InputDati.leggiStringaNonVuota("Obbligatorio? (s/n): ").equalsIgnoreCase("s"));
 				} else
 					conf.rimuoviCampoSpecifico(catS, nS);
 				break;
@@ -134,8 +122,7 @@ public class MainApp {
 				gestisciBozze(conf, sc);
 				break;
 			case "7":
-				System.out.print("Inserisci il nome della Categoria da visualizzare in bacheca: ");
-				conf.visualizzaBachecaFiltrata(sc.nextLine());
+				conf.visualizzaBachecaFiltrata(InputDati.leggiStringaNonVuota("Inserisci il nome della Categoria da visualizzare in bacheca: "));
 				break;
 			case "8":
 				conf.visualizzaBachecaIntera();
@@ -149,8 +136,7 @@ public class MainApp {
 
 	private static void creaNuovaProposta(Configuratore conf, Scanner sc) {
 		System.out.println("\n--- CREAZIONE NUOVA PROPOSTA ---");
-		System.out.print("Seleziona la Categoria dell'iniziativa: ");
-		String catNome = sc.nextLine();
+		String catNome = InputDati.leggiStringaNonVuota("Seleziona la Categoria dell'iniziativa: ");
 
 		Categoria sel = null;
 		for(Categoria c : conf.getCategorie()) {
@@ -174,8 +160,7 @@ public class MainApp {
 
 		System.out.println("Inserisci i valori richiesti (le date devono essere nel formato gg/mm/aaaa):");
 		for (Campo c : tutti) {
-			System.out.print("- " + c.getNome() + (c.isObbligatorio() ? "*" : "") + ": ");
-			String val = sc.nextLine();
+			String val = InputDati.leggiStringaNonVuota("- " + c.getNome() + (c.isObbligatorio() ? "*" : "") + ": ");
 			if (!val.isBlank()) p.inserisciValore(c.getNome(), val);
 		}
 
@@ -212,9 +197,8 @@ public class MainApp {
 							   " | Identificativo: " + identificativo);
 		}
 
-		System.out.print("\nInserisci il numero della bozza da pubblicare in bacheca (0 per annullare): ");
 		try {
-			int scelta = Integer.parseInt(sc.nextLine());
+			int scelta = Integer.parseInt(InputDati.leggiStringaNonVuota("\nInserisci il numero della bozza da pubblicare in bacheca (0 per annullare): "));
 			if (scelta > 0 && scelta <= bozze.size()) {
 				conf.pubblicaBozza(scelta - 1);
 				System.out.println(">>> Bozza pubblicata con successo! Ora è visibile in Bacheca.");

@@ -2,6 +2,9 @@ package it.unibs.elaborato.v2;
 
 import java.io.*;
 import java.util.*;
+
+import it.unibs.fp.mylib.InputDati;
+
 import java.time.LocalDate;
 
 /**
@@ -34,8 +37,7 @@ public class Configuratore {
 			System.out.println("NOTA PER V2: Inserisci obbligatoriamente 'Termine ultimo di iscrizione' e 'Data'");
 			try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
 				while (true) {
-					System.out.print("Nome campo base (o 'FINE'): ");
-					String nome = sc.nextLine();
+					String nome = InputDati.leggiStringaNonVuota("Nome campo base (o 'FINE'): ");
 					if (nome.equalsIgnoreCase("FINE"))
 						break;
 					if (!nome.trim().isEmpty()) {
@@ -105,26 +107,29 @@ public class Configuratore {
 	}
 
 	// --- BACHECA ---
-	public void visualizzaBachecaFiltrata(String nomeCat) {
-		List<Proposta> filtrate = bachecaReale.filtraPerCategoria(nomeCat);
-		System.out.println("\n--- BACHECA CATEGORIA: " + nomeCat.toUpperCase() + " ---");
-		if (filtrate.isEmpty()) {
-			System.out.println("Nessuna proposta aperta trovata in questa categoria.");
-		} else {
-			filtrate.forEach(System.out::println);
+		public void visualizzaBachecaFiltrata(String nomeCat) {
+			List<Proposta> filtrate = bachecaReale.filtraPerCategoria(nomeCat);
+			System.out.println("\n>>> BACHECA CATEGORIA: " + nomeCat.toUpperCase() + " <<<");
+			if (filtrate.isEmpty()) {
+				System.out.println("Nessuna proposta aperta trovata in questa categoria.");
+			} else {
+				for (Proposta p : filtrate) {
+					System.out.println(p.stampaFormattata(campiBase, campiComuni));
+				}
+			}
 		}
-	}
 
-	// NUOVO METODO: Visualizza tutta la bacheca
-	public void visualizzaBachecaIntera() {
-		List<Proposta> tutte = bachecaReale.getTutte();
-		System.out.println("\n--- INTERA BACHECA ---");
-		if (tutte.isEmpty()) {
-			System.out.println("La bacheca è attualmente vuota.");
-		} else {
-			tutte.forEach(System.out::println);
+		public void visualizzaBachecaIntera() {
+			List<Proposta> tutte = bachecaReale.getTutte();
+			System.out.println("\n>>> INTERA BACHECA <<<");
+			if (tutte.isEmpty()) {
+				System.out.println("La bacheca è attualmente vuota.");
+			} else {
+				for (Proposta p : tutte) {
+					System.out.println(p.stampaFormattata(campiBase, campiComuni));
+				}
+			}
 		}
-	}
 
 	// --- PERSISTENZA ---
 	public void salvaDati(String path) throws IOException {
