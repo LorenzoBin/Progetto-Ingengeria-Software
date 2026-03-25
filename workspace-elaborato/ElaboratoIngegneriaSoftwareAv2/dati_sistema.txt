@@ -1,0 +1,5 @@
+COMUNI
+CATEGORIE
+sport
+ARCHIVIO_PROPOSTE
+sport|2026-03-25|Aperta|Data conclusiva:05/04/2026|Titolo:nuoto|Termine ultimo di iscrizione:30/03/2026|Quota individuale:5|Data:05/04/2026|Numero di partecipanti:3|Luogo:brescia|Ora:15:30
