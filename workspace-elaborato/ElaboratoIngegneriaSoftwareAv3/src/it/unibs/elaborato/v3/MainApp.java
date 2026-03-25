@@ -18,7 +18,7 @@ public class MainApp {
 			String utenteAttivo = null;
 			String ruoloAttivo = null;
 
-			// CICLO DI ACCESSO
+			// --- CICLO DI ACCESSO (LOGIN / REGISTRAZIONE) ---
 			while (utenteAttivo == null) {
 				System.out.println("\n--- ACCESSO SISTEMA (V3) ---");
 				System.out.println("1. Login (Configuratore o Fruitore)");
@@ -36,6 +36,7 @@ public class MainApp {
 						login.salva(FILE_CREDENZIALI);
 						System.out.println("\n>>> Fruitore registrato con successo!");
 						System.out.println(">>> Accesso automatico in corso...");
+						// Accesso automatico
 						utenteAttivo = u;
 						ruoloAttivo = "FRUITORE";
 					} else {
@@ -47,6 +48,7 @@ public class MainApp {
 					System.out.print("Password: ");
 					String p = sc.nextLine();
 
+					// Controllo se è l'admin master che deve registrare un configuratore
 					if (login.isMasterAdmin(u, p)) {
 						System.out.println("\n--- REGISTRAZIONE CONFIGURATORE ---");
 						System.out.print("Nuovo Username: ");
@@ -62,6 +64,7 @@ public class MainApp {
 							System.out.println("Errore: Username già in uso!");
 						}
 					} else {
+						// Autenticazione normale
 						ruoloAttivo = login.autentica(u, p);
 						if (ruoloAttivo != null) {
 							utenteAttivo = u;
@@ -75,26 +78,28 @@ public class MainApp {
 				}
 			}
 
-			// Caricamento Dati
-			config.caricaOInizializzaCampiBase(FILE_CAMPI_BASE, sc);
+			// --- CARICAMENTO DATI E MOTORE TEMPORALE ---
+			// Passo il ruoloAttivo per evitare che un Fruitore configuri il sistema al
+			// primo avvio
+			config.caricaOInizializzaCampiBase(FILE_CAMPI_BASE, sc, ruoloAttivo);
 			config.caricaDati(FILE_DATI_SISTEMA);
 
-			// V3: La Mezzanotte! Aggiorna gli stati al login
+			// V3: La "Mezzanotte"! Aggiorna gli stati scaduti e invia notifiche al login
 			config.aggiornaStatiEInviaNotifiche();
 
-			// Smistamento ai Menu
-			if (ruoloAttivo.equals("CONFIGURATORE")) {
+			// --- SMISTAMENTO AI MENU ---
+			if ("CONFIGURATORE".equals(ruoloAttivo)) {
 				eseguiMenuConfiguratore(config, login, utenteAttivo, sc);
 			} else {
 				eseguiMenuFruitore(config, login, utenteAttivo, sc);
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Errore critico nei file di sistema: " + e.getMessage());
 		}
 	}
 
-	// MENU CONFIGURATORE
+	// --- MENU CONFIGURATORE ---
 	private static void eseguiMenuConfiguratore(Configuratore conf, SessioneLogin log, String user, Scanner sc)
 			throws IOException {
 		boolean exit = false;
@@ -157,11 +162,14 @@ public class MainApp {
 			case "8":
 				conf.visualizzaBachecaIntera();
 				break;
+			default:
+				System.out.println("Opzione non valida.");
+				break;
 			}
 		}
 	}
 
-	// MENU FRUITORE
+	// --- MENU FRUITORE ---
 	private static void eseguiMenuFruitore(Configuratore conf, SessioneLogin log, String user, Scanner sc)
 			throws IOException {
 		Fruitore io = conf.getFruitore(user);
@@ -190,7 +198,7 @@ public class MainApp {
 
 				System.out.println("\n--- PROPOSTE DISPONIBILI ---");
 				for (int i = 0; i < aperte.size(); i++) {
-					// Ora la lista parte da 1 per essere più user-friendly
+					// Stampa da 1 a N
 					System.out.println("[" + (i + 1) + "] " + aperte.get(i).getValore("Titolo") + " (Cat: "
 							+ aperte.get(i).getCategoria().getNome() + ")");
 				}
@@ -200,7 +208,7 @@ public class MainApp {
 					if (idx == 0) {
 						System.out.println(">>> Operazione annullata. Ritorno al menu principale.");
 					} else if (idx > 0 && idx <= aperte.size()) {
-						// Riadattiamo l'indice perché abbiamo visualizzato a partire da 1
+						// Riadattiamo l'indice (idx - 1)
 						if (aperte.get(idx - 1).iscrivi(user)) {
 							System.out.println(">>> Iscrizione effettuata con successo!");
 						} else {
@@ -233,10 +241,14 @@ public class MainApp {
 				} catch (Exception e) {
 				}
 				break;
+			default:
+				System.out.println("Opzione non valida.");
+				break;
 			}
 		}
 	}
 
+	// --- METODI HELPER PER CONFIGURATORE ---
 	private static void creaNuovaProposta(Configuratore conf, Scanner sc) {
 		System.out.print("Categoria dell'iniziativa: ");
 		Categoria sel = null;
@@ -278,6 +290,7 @@ public class MainApp {
 			if (titolo == null || titolo.isBlank())
 				titolo = "Proposta senza titolo";
 			String categoria = bozze.get(i).getCategoria().getNome();
+			// Mostra sia il titolo dell'evento sia la categoria
 			System.out.println("[" + (i + 1) + "] " + titolo + " (Cat: " + categoria + ")");
 		}
 

@@ -1,0 +1,6 @@
+CONFIGURATORI
+luca;1
+FRUITORI
+antonio;1
+marco;1
+mario;1

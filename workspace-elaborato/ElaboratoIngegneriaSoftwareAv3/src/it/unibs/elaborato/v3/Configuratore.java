@@ -13,30 +13,29 @@ public class Configuratore {
 	private Map<String, Fruitore> mappaFruitori = new HashMap<>();
 
 	// --- SETUP E GETTER ---
-	public void caricaOInizializzaCampiBase(String path, Scanner sc) throws IOException {
+	public void caricaOInizializzaCampiBase(String path, Scanner sc, String ruolo) throws IOException {
 		File f = new File(path);
-		if (!f.exists())
-			f.createNewFile();
+		if (!f.exists()) f.createNewFile();
 		try (BufferedReader br = new BufferedReader(new FileReader(f))) {
 			String l;
-			while ((l = br.readLine()) != null)
-				if (!l.trim().isEmpty())
-					campiBase.add(new CampoBase(l.trim()));
+			while ((l = br.readLine()) != null) if (!l.trim().isEmpty()) campiBase.add(new CampoBase(l.trim()));
 		}
+		
+		// Se il file è vuoto, consentiamo l'inserimento SOLO al Configuratore
 		if (campiBase.isEmpty()) {
-			System.out.println(
-					"\n[SETUP] Inserisci i campi base. Obbligatori: 'Termine ultimo di iscrizione', 'Data', 'Data conclusiva'");
-			try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
-				while (true) {
-					System.out.print("Nome campo base (o 'FINE'): ");
-					String n = sc.nextLine();
-					if (n.equalsIgnoreCase("FINE"))
-						break;
-					if (!n.trim().isEmpty()) {
-						campiBase.add(new CampoBase(n.trim()));
-						pw.println(n.trim());
+			if ("CONFIGURATORE".equals(ruolo)) {
+				System.out.println("\n[SETUP] Inserisci i campi base. Obbligatori: 'Termine ultimo di iscrizione', 'Data', 'Data conclusiva'");
+				try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
+					while (true) {
+						System.out.print("Nome campo base (o 'FINE'): ");
+						String n = sc.nextLine();
+						if (n.equalsIgnoreCase("FINE")) break;
+						if (!n.trim().isEmpty()) { campiBase.add(new CampoBase(n.trim())); pw.println(n.trim()); }
 					}
 				}
+			} else {
+				// Il Fruitore salta il setup e riceve solo un avviso
+				System.out.println("\n[AVVISO] Il sistema non è ancora stato inizializzato da un Configuratore. La bacheca sarà vuota.");
 			}
 		}
 	}

@@ -1,0 +1,7 @@
+COMUNI
+CATEGORIE
+sport
+ARCHIVIO_PROPOSTE
+sport##Data conclusiva=19/05/2026~Titolo=calcio~Termine ultimo di iscrizione=14/05/2026~Quota individuale=6~Data=19/05/2026~Numero di partecipanti=1421~Luogo=Brescia~Ora=13:30~##Valida=19/04/2026~Aperta=19/04/2026~Annullata=20/05/2026~##mario
+FRUITORI_NOTIFICHE
+mario##20/05/2026||L'iniziativa 'calcio' è stata ANNULLATA per mancato raggiungimento del numero di iscritti.
