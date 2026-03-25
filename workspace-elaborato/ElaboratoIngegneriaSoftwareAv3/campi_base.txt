@@ -1,8 +1,0 @@
-Titolo
-Numero di partecipanti
-Termine ultimo di iscrizione
-Luogo
-Data
-Ora
-Quota individuale
-Data conclusiva
