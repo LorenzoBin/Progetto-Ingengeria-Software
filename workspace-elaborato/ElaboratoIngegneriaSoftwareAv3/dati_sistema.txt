@@ -1,0 +1,10 @@
+COMUNI
+CATEGORIE
+sport
+ARCHIVIO_PROPOSTE
+sport##Data conclusiva=18/04/2026~Titolo=nuoto~Termine ultimo di iscrizione=01/04/2026~Quota individuale=5~Data=18/04/2026~Numero di partecipanti=3~Luogo=brescia~Ora=18:30~##Valida=25/03/2026~Aperta=25/03/2026~Confermata=02/04/2026~##antonio~mario~marco
+FRUITORI_NOTIFICHE
+pietro
+antonio##02/04/2026||L'iniziativa 'nuoto' è CONFERMATA! Ricorda: Data 18/04/2026, Luogo brescia
+marco##02/04/2026||L'iniziativa 'nuoto' è CONFERMATA! Ricorda: Data 18/04/2026, Luogo brescia
+mario
