@@ -1,6 +1,0 @@
-COMUNI
-note;false
-CATEGORIE
-sport;certificato medico,true
-ARCHIVIO_PROPOSTE
-sport|2026-03-18|Aperta|certificato medico:si|Data conclusiva:25/03/2026|Titolo:nuoto|Termine ultimo di iscrizione:21/03/2026|Quota individuale:5|Data:25/03/2026|Numero di partecipanti:5|Luogo:brescia|Ora:15:30
